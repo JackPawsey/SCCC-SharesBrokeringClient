@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.4.3 (RELEASE-2.4.3-ad3323c; 2019-01-21T17:46:06+0000) JAXWS-RI/2.3.2 JAXWS-API/2.3.2 JAXB-RI/2.3.2 JAXB-API/2.3.2 git-revision#unknown. --><xs:schema xmlns:tns="http://stockservice.me.org/" xmlns:ns1="http://xml.netbeans.org/schema/share" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://stockservice.me.org/">
+
+<xs:import namespace="http://xml.netbeans.org/schema/share" schemaLocation="http://localhost:8080/SharesBrokeringService/SearchStocks?xsd=1"/>
+
+<xs:element name="searchStocks" type="tns:searchStocks"/>
+
+<xs:element name="searchStocksResponse" type="tns:searchStocksResponse"/>
+
+<xs:complexType name="searchStocks">
+<xs:sequence>
+<xs:element name="search_string" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+<xs:element name="arg2" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="searchStocksResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:stock" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

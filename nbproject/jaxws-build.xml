@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+        *** GENERATED FROM jax-ws.xml - DO NOT EDIT !                             ***
+        *** TO MODIFY wsimport options USE Web Service node -> Edit WS Attributes ***
+        *** TO CHANGE TARGETS GENERATED TO jaxws-build.xml COPY THOSE             ***
+        *** TARGETS TO ../build.xml AND MODIFY THAT FILE INSTEAD                  ***
+
+        --><project xmlns:xalan="http://xml.apache.org/xslt" xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3" xmlns:jaxws="http://www.netbeans.org/ns/jax-ws/1">
+    <!--
+                ===================
+                JAX-WS WSIMPORT SECTION
+                ===================
+            -->
+    <target name="wsimport-init" depends="init">
+        <mkdir dir="${build.generated.sources.dir}/jax-ws"/>
+        <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+            <classpath path="${libs.jaxws21.classpath}"/>
+        </taskdef>
+    </target>
+    <target name="wsimport-client-getStocksService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/getStocksService"/>
+        <property name="wsdl-getStocksService" location="xml-resources/web-service-references/getStocksService/wsdl/localhost_8080/SharesBrokeringService/getStocksService.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/getStocksService" destdir="${build.generated.dir}/jax-wsCache/getStocksService" wsdl="${wsdl-getStocksService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/SharesBrokeringService/getStocksService?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${wsdl-getStocksService}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/getStocksService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/getStocksService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-getStocksService" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/getStocksService"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/org/me/stockservice"/>
+    </target>
+    <target name="wsimport-client-BuyStocks" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/BuyStocks"/>
+        <property name="wsdl-BuyStocks" location="xml-resources/web-service-references/BuyStocks/wsdl/localhost_8080/SharesBrokeringService/BuyStocks.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/BuyStocks" destdir="${build.generated.dir}/jax-wsCache/BuyStocks" wsdl="${wsdl-BuyStocks}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/SharesBrokeringService/BuyStocks?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${wsdl-BuyStocks}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/BuyStocks"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/BuyStocks">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-BuyStocks" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/BuyStocks"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/org/me/stockservice"/>
+    </target>
+    <target name="wsimport-client-SellStocks" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/SellStocks"/>
+        <property name="wsdl-SellStocks" location="xml-resources/web-service-references/SellStocks/wsdl/localhost_8080/SharesBrokeringService/SellStocks.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/SellStocks" destdir="${build.generated.dir}/jax-wsCache/SellStocks" wsdl="${wsdl-SellStocks}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/SharesBrokeringService/SellStocks?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${wsdl-SellStocks}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/SellStocks"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/SellStocks">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-SellStocks" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/SellStocks"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/org/me/stockservice"/>
+    </target>
+    <target name="wsimport-client-GetCurrencies" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/GetCurrencies"/>
+        <property name="wsdl-GetCurrencies" location="xml-resources/web-service-references/GetCurrencies/wsdl/localhost_8080/SharesBrokeringService/GetCurrencies.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/GetCurrencies" destdir="${build.generated.dir}/jax-wsCache/GetCurrencies" wsdl="${wsdl-GetCurrencies}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/SharesBrokeringService/GetCurrencies?wsdl" xnocompile="true" xendorsed="true" package="sharebrokeringclient">
+            <depends file="${wsdl-GetCurrencies}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/GetCurrencies"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/GetCurrencies">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-GetCurrencies" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/GetCurrencies"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/sharebrokeringclient"/>
+    </target>
+    <target name="wsimport-client-addStock" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/addStock"/>
+        <property name="wsdl-addStock" location="xml-resources/web-service-references/addStock/wsdl/localhost_8080/SharesBrokeringService/addStock.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/addStock" destdir="${build.generated.dir}/jax-wsCache/addStock" wsdl="${wsdl-addStock}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/SharesBrokeringService/addStock?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${wsdl-addStock}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/addStock"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/addStock">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-addStock" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/addStock"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/org/me/stockservice"/>
+    </target>
+    <target name="wsimport-client-removeStock" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/removeStock"/>
+        <property name="wsdl-removeStock" location="xml-resources/web-service-references/removeStock/wsdl/localhost_8080/SharesBrokeringService/removeStock.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/removeStock" destdir="${build.generated.dir}/jax-wsCache/removeStock" wsdl="${wsdl-removeStock}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/SharesBrokeringService/removeStock?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${wsdl-removeStock}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/removeStock"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/removeStock">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-removeStock" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/removeStock"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/org/me/stockservice"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-getStocksService, wsimport-client-BuyStocks, wsimport-client-SellStocks, wsimport-client-GetCurrencies, wsimport-client-addStock, wsimport-client-removeStock"/>
+</project>

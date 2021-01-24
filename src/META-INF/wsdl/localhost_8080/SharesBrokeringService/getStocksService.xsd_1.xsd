@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.4.3 (RELEASE-2.4.3-ad3323c; 2019-01-21T17:46:06+0000) JAXWS-RI/2.3.2 JAXWS-API/2.3.2 JAXB-RI/2.3.2 JAXB-API/2.3.2 git-revision#unknown. --><xs:schema xmlns:tns="http://xml.netbeans.org/schema/share" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0" targetNamespace="http://xml.netbeans.org/schema/share">
+
+<xs:complexType name="stock">
+<xs:sequence>
+<xs:element name="CompanyName" type="xs:string"/>
+<xs:element name="CompanySymbol" type="xs:string"/>
+<xs:element name="NoAvailableShares" type="xs:int"/>
+<xs:element name="Price" type="tns:share_price"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="share_price">
+<xs:sequence>
+<xs:element name="Currency" type="xs:string"/>
+<xs:element name="Value" type="xs:decimal"/>
+<xs:element name="LastUpdateDate" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

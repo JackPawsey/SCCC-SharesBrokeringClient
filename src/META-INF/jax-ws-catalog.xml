@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/SharesBrokeringService/getStocksService?wsdl" uri="wsdl/localhost_8080/SharesBrokeringService/getStocksService.wsdl"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/getStocksService?xsd=1" uri="wsdl/localhost_8080/SharesBrokeringService/getStocksService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/getStocksService?xsd=2" uri="wsdl/localhost_8080/SharesBrokeringService/getStocksService.xsd_2.xsd"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/BuyStocks?wsdl" uri="wsdl/localhost_8080/SharesBrokeringService/BuyStocks.wsdl"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/BuyStocks?xsd=1" uri="wsdl/localhost_8080/SharesBrokeringService/BuyStocks.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/SellStocks?wsdl" uri="wsdl/localhost_8080/SharesBrokeringService/SellStocks.wsdl"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/SellStocks?xsd=1" uri="wsdl/localhost_8080/SharesBrokeringService/SellStocks.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/GetCurrencyCodes?wsdl" uri="wsdl/localhost_8080/SharesBrokeringService/GetCurrencyCodes.wsdl"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/GetCurrencyCodes?xsd=1" uri="wsdl/localhost_8080/SharesBrokeringService/GetCurrencyCodes.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/getCurrencyCodesService?wsdl" uri="wsdl/localhost_8080/SharesBrokeringService/getCurrencyCodesService.wsdl"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/getCurrencyCodesService?xsd=1" uri="wsdl/localhost_8080/SharesBrokeringService/getCurrencyCodesService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/SearchStocks?wsdl" uri="wsdl/localhost_8080/SharesBrokeringService/SearchStocks.wsdl"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/SearchStocks?xsd=1" uri="wsdl/localhost_8080/SharesBrokeringService/SearchStocks.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/SearchStocks?xsd=2" uri="wsdl/localhost_8080/SharesBrokeringService/SearchStocks.xsd_2.xsd"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/GetCurrencies?wsdl" uri="wsdl/localhost_8080/SharesBrokeringService/GetCurrencies.wsdl"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/GetCurrencies?xsd=1" uri="wsdl/localhost_8080/SharesBrokeringService/GetCurrencies.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/addStock?wsdl" uri="wsdl/localhost_8080/SharesBrokeringService/addStock.wsdl"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/addStock?xsd=1" uri="wsdl/localhost_8080/SharesBrokeringService/addStock.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/removeStock?wsdl" uri="wsdl/localhost_8080/SharesBrokeringService/removeStock.wsdl"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/removeStock?xsd=1" uri="wsdl/localhost_8080/SharesBrokeringService/removeStock.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SharesBrokeringService/getStocksService?xsd=3" uri="wsdl/localhost_8080/SharesBrokeringService/getStocksService.xsd_3.xsd"/>
+</catalog>
