@@ -7,6 +7,7 @@ package sharebrokeringclient;
 
 import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
@@ -35,16 +36,95 @@ import org.netbeans.xml.schema.share.Stock;
 public final class sharesbrokeringclient extends javax.swing.JFrame {
 
     public sharesbrokeringclient() throws DatatypeConfigurationException_Exception, ParseExceptionException, IOException {
+        FileHandler fileHandler = new FileHandler("C:\\Users\\Jack\\Documents\\NetBeansProjects\\ShareBrokeringClient\\money.txt", "C:\\Users\\Jack\\Documents\\NetBeansProjects\\ShareBrokeringClient\\shares.txt");
+        this.fileHandler = fileHandler;
+        
         initComponents(); // Generated code stuff
         
         initComboBoxes(); // Populate combo boxes
         loadTable(); // Populate table with stock data
         initTableRowSorter(); // Create table row sorter
+        initMoney(); // Load money value from file
+        initShares(); //Load shares from value
         
         // Set window title
         JTextField myTitle;
         myTitle = new JTextField("Shares Brokering Client");  
         this.setTitle(myTitle.getText());  
+    }
+    
+    private void initMoney() {
+        jLabel8.setText(fileHandler.readMoney());
+    }
+    
+    private void subtractMoney(double money) {
+        //double newValue = Double.parseDouble(jLabel8.getText()) - money;
+        double newValue = Double.parseDouble(fileHandler.readMoney()) - money;
+        
+        fileHandler.writeMoney(newValue);
+        jLabel8.setText(fileHandler.readMoney());
+    }
+    
+    private void addMoney(double money) {
+        double newValue = Double.parseDouble(fileHandler.readMoney()) + money;
+        
+        fileHandler.writeMoney(newValue);
+        jLabel8.setText(fileHandler.readMoney());
+    }
+    
+    private void initShares() throws FileNotFoundException {
+        ArrayList<String> shares = fileHandler.readShares();
+    
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        
+        clearTable2();
+                
+        for (int x = 0; x < shares.size(); x++) {
+            String[] splitStr = shares.get(x).split(",");
+            model.addRow(new Object[]{splitStr[0].trim(), splitStr[1].trim()});
+        }
+    }
+    
+    private void subtractShares(String sellStockName, int sellQuantity, int index) {
+        try {
+            ArrayList<String> shares = fileHandler.readShares();
+            
+            String[] splitStr = shares.get(index).split(",");
+            
+            if ((Integer.parseInt(splitStr[1].trim()) - sellQuantity) == 0) {
+                shares.remove(index);
+            } else {
+                shares.set(index, sellStockName + ", " + (Integer.parseInt(splitStr[1].trim()) - sellQuantity));
+            }
+            
+            fileHandler.writeShares(shares);
+            initShares();
+        } catch (FileNotFoundException ex) {
+        }
+    }
+    
+    private void addShares(String buyStockName, int buyQuantity) {
+        boolean existingStock = false;
+        
+        try {
+            ArrayList<String> shares = fileHandler.readShares();
+            
+            for (int x = 0; x < shares.size(); x++) {
+                String[] splitStr = shares.get(x).split(",");
+                if (splitStr[0].trim().equals(buyStockName)) {
+                    shares.set(x, buyStockName + ", " + (Integer.parseInt(splitStr[1].trim()) + buyQuantity));
+                    existingStock = true;
+                }
+            }
+            
+            if (!existingStock) {
+                shares.add(buyStockName + ", " + buyQuantity);
+            }
+            
+            fileHandler.writeShares(shares);
+            initShares();
+        } catch (FileNotFoundException ex) {
+        }
     }
     
     // HTTP GET request
@@ -99,6 +179,12 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
     // Removes all data from table
     public void clearTable() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+    }
+    
+     // Removes all data from table
+    public void clearTable2() {
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         model.setRowCount(0);
     }
     
@@ -187,6 +273,10 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jLabel23 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
@@ -211,7 +301,15 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jButton8 = new javax.swing.JButton();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jTextField7 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -405,7 +503,43 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
                 .addContainerGap(91, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("User", jPanel1);
+        jTabbedPane1.addTab("Home", jPanel1);
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Share", "Volume"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
+        jLabel23.setFont(new java.awt.Font("Microsoft YaHei UI Light", 1, 36)); // NOI18N
+        jLabel23.setText("User Owned Shares");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(992, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel23)
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Your Shares", jPanel5);
 
         jLabel15.setFont(new java.awt.Font("Microsoft YaHei UI Light", 1, 36)); // NOI18N
         jLabel15.setText("Admin Features");
@@ -450,7 +584,7 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
                     .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton6)
                     .addComponent(jLabel17))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -600,6 +734,62 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
         jLabel19.setForeground(java.awt.Color.red);
         jLabel19.setText("Logged Out");
 
+        jPanel6.setBackground(java.awt.Color.lightGray);
+        jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel6.setForeground(java.awt.Color.lightGray);
+        jPanel6.setOpaque(false);
+
+        jButton8.setText("Confirm");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setText("Set Client Funds:");
+
+        jLabel21.setFont(new java.awt.Font("Microsoft YaHei UI Light", 1, 24)); // NOI18N
+        jLabel21.setForeground(java.awt.Color.red);
+        jLabel21.setText("Set Funds");
+
+        jTextField7.setForeground(java.awt.Color.lightGray);
+        jTextField7.setText("E.g. 99.99");
+        jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField7FocusLost(evt);
+            }
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField7FocusGained(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel20)
+                    .addComponent(jButton8)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField7))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel21)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel20)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jButton8)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -611,7 +801,9 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 652, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 485, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -621,8 +813,8 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jButton7)
                         .addGap(28, 28, 28)
-                        .addComponent(jLabel19)
-                        .addContainerGap())))
+                        .addComponent(jLabel19)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -637,8 +829,10 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
                         .addComponent(jLabel19)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(241, 241, 241))
         );
 
@@ -646,6 +840,14 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 36)); // NOI18N
         jLabel1.setText("Shares Brokering Service");
+
+        jLabel7.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 36)); // NOI18N
+
+        jLabel8.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 36)); // NOI18N
+        jLabel8.setText("jLabel8");
+
+        jLabel22.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 36)); // NOI18N
+        jLabel22.setText("$");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -657,14 +859,23 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
                     .addComponent(jTabbedPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(305, 305, 305)
+                        .addComponent(jLabel22)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel22))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -675,19 +886,40 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
 
     // "Buy shares" button
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String buyResult;
+        int buyResult;
         int buyQuantity;
         String buyStockName;
+        int priceIndex = 0;
+        
+        buyQuantity = Integer.parseInt(jTextField1.getText());
+        buyStockName = jComboBox1.getSelectedItem().toString();
+        
+        for (int x = 0; x < jTable1.getRowCount(); x++) {
+            if (buyStockName.equals(jTable1.getModel().getValueAt(x, 0))) {
+                priceIndex = x;
+                break;
+            }
+        }
+
+        double stockPrice = Double.valueOf(jTable1.getModel().getValueAt(priceIndex, 3).toString());
+        double stockValue = buyQuantity * stockPrice;
                 
         try {
-            buyQuantity = Integer.parseInt(jTextField1.getText());
-            buyStockName = jComboBox1.getSelectedItem().toString();
+            if (stockValue > Double.parseDouble(fileHandler.readMoney())) {
+                showMessageDialog(null, "You don't have enough money!");
+            } else {
+                buyResult = buyStocks(buyQuantity, buyStockName);
             
-            buyResult = buyStocks(buyQuantity, buyStockName);
-            clearTable();
-            loadTable();
-            showMessageDialog(null, buyResult);
-            
+                if (buyResult == 1) {
+                    clearTable();
+                    loadTable();
+                    showMessageDialog(null, "Success!");
+                    subtractMoney(stockValue);
+                    addShares(buyStockName, buyQuantity);
+                } else {
+                    showMessageDialog(null, "Failed!");
+                }
+            }
         } catch (NumberFormatException e) {
             showMessageDialog(null, "Please enter a quantity to buy");
         } catch (DatatypeConfigurationException_Exception | ParseExceptionException ex) {
@@ -697,23 +929,55 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
 
     // "Sell shares" button
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        String sellResult;
+        int sellResult;
         int sellQuantity;
         String sellStockName;
-                
-        try {
-            sellQuantity = Integer.parseInt(jTextField2.getText());
-            sellStockName = jComboBox2.getSelectedItem().toString();
-            
-            sellResult = sellStocks(sellQuantity, sellStockName);
-            clearTable();
-            loadTable();
-            showMessageDialog(null, sellResult);
-            
-        } catch (NumberFormatException e) {
-            showMessageDialog(null, "Please enter a quantity to sell");
-        } catch (DatatypeConfigurationException_Exception | ParseExceptionException ex) {
-            Logger.getLogger(sharesbrokeringclient.class.getName()).log(Level.SEVERE, null, ex);
+        int sharesIndex = 0;
+        int priceIndex = 0;
+        boolean validSale = false;
+        
+        sellQuantity = Integer.parseInt(jTextField2.getText());
+        sellStockName = jComboBox2.getSelectedItem().toString();
+        
+        for (int x = 0; x < jTable2.getRowCount(); x++) {
+            if (sellStockName.equals(jTable2.getModel().getValueAt(x, 0))) { // Does the client have any of that stock?
+                if (sellQuantity <= Integer.parseInt(jTable2.getModel().getValueAt(x, 1).toString())) { // Is the client trying to sell more than they have?
+                    validSale = true;
+                    sharesIndex = x;
+                }
+            }
+        }
+        
+        if (validSale) {
+            for (int y = 0; y < jTable1.getRowCount(); y++) {
+                if (sellStockName.equals(jTable1.getModel().getValueAt(y, 0))) {
+                    priceIndex = y;
+                    break;
+                }
+            }
+
+            double stockPrice = Double.valueOf(jTable1.getModel().getValueAt(priceIndex, 3).toString());
+            double stockValue = sellQuantity * stockPrice;
+
+            try {
+                sellResult = sellStocks(sellQuantity, sellStockName);
+
+                if (sellResult == 1) {
+                    clearTable();
+                    loadTable();
+                    showMessageDialog(null, "Success!");
+                    addMoney(stockValue);
+                    subtractShares(sellStockName, sellQuantity, sharesIndex);
+                } else {
+                    showMessageDialog(null, "Failed!");
+                }
+            } catch (NumberFormatException e) {
+                showMessageDialog(null, "Please enter a quantity to sell");
+            } catch (DatatypeConfigurationException_Exception | ParseExceptionException ex) {
+                Logger.getLogger(sharesbrokeringclient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            showMessageDialog(null, "You do not have enough of this stock for this transaction!");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -745,12 +1009,6 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
                 if ((splitStr[1].substring(splitStr[1].length() - 1)).equals("Z")) {
                     splitStr[1] = splitStr[1].substring(0, splitStr[1].length() - 1);
                 }
-                
-//                try {
-//                    model.addRow(new Object[]{searchResults.get(x).getCompanyName(), searchResults.get(x).getCompanySymbol(), searchResults.get(x).getNoAvailableShares(), searchResults.get(x).getPrice().getValue(), searchResults.get(x).getPrice().getCurrency(), splitStr[1], splitStr[0], queryRESTSerivce(searchResults.get(x).getCompanySymbol())});
-//                } catch (IOException ex) {
-//                    Logger.getLogger(sharesbrokeringclient.class.getName()).log(Level.SEVERE, null, ex);
-//                }
                 
                 try {
                     model.addRow(new Object[]{searchResults.get(x).getCompanyName(), searchResults.get(x).getCompanySymbol(), searchResults.get(x).getNoAvailableShares(), searchResults.get(x).getPrice().getValue(), queryRESTSerivce(searchResults.get(x).getCompanySymbol(), "adj_open"), queryRESTSerivce(searchResults.get(x).getCompanySymbol(), "adj_close"), searchResults.get(x).getPrice().getCurrency(), splitStr[1], splitStr[0]});
@@ -863,7 +1121,7 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTextField8FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField8FocusLost
-        if (jTextField4.getText().equals("")) {
+        if (jTextField8.getText().equals("")) {
             jTextField8.setText("E.g. 5.50");
             jTextField8.setForeground(Color.LIGHT_GRAY);
         }
@@ -875,7 +1133,7 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField8FocusGained
 
     private void jTextField6FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField6FocusLost
-        if (jTextField4.getText().equals("")) {
+        if (jTextField6.getText().equals("")) {
             jTextField6.setText("E.g. 50");
             jTextField6.setForeground(Color.LIGHT_GRAY);
         }
@@ -887,7 +1145,7 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField6FocusGained
 
     private void jTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusLost
-        if (jTextField4.getText().equals("")) {
+        if (jTextField5.getText().equals("")) {
             jTextField5.setText("E.g. FRD");
             jTextField5.setForeground(Color.LIGHT_GRAY);
         }
@@ -971,6 +1229,7 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
         if (password.equals(adminPassword)) {
             jButton1.setEnabled(true);
             jButton6.setEnabled(true);
+            jButton8.setEnabled(true);
             jLabel19.setText("Logged In");
             jLabel19.setForeground(Color.GREEN);
         } else {
@@ -985,10 +1244,11 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
         JTabbedPane sourceTabbedPane = (JTabbedPane) evt.getSource();
         int index = sourceTabbedPane.getSelectedIndex();
         
-        // Logout admin when swithcing back to user tab
+        // Logout admin when switching back to other tab
         if (!sourceTabbedPane.getTitleAt(index).equals("Admin")) {
             jButton1.setEnabled(false);
             jButton6.setEnabled(false);
+            jButton8.setEnabled(false);
             jLabel19.setText("Logged Out");
             jLabel19.setForeground(Color.RED);
             
@@ -996,8 +1256,28 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
             jTextField5.setText("");
             jTextField6.setText("");
             jTextField8.setText("");
+            jTextField7.setText("");
         }
     }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    // "Confirm" button
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        fileHandler.writeMoney(Double.parseDouble(jTextField7.getText()));
+        initMoney();
+        showMessageDialog(null, "Client funds set to $" + jTextField7.getText());
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jTextField7FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField7FocusGained
+        jTextField7.setText("");
+        jTextField7.setForeground(Color.BLACK);
+    }//GEN-LAST:event_jTextField7FocusGained
+
+    private void jTextField7FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField7FocusLost
+        if (jTextField7.getText().equals("")) {
+            jTextField7.setText("E.g. 99.99");
+            jTextField7.setForeground(Color.LIGHT_GRAY);
+        }
+    }//GEN-LAST:event_jTextField7FocusLost
 
     /**
      * @param args the command line arguments
@@ -1044,6 +1324,7 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
@@ -1062,42 +1343,42 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     // End of variables declaration//GEN-END:variables
 
     String selectedCurrency = "";
     boolean INITIALIZED = false;
-
-    private static String buyStocks(int arg0, java.lang.String arg1) {
-        org.me.stockservice.BuyStocks_Service service = new org.me.stockservice.BuyStocks_Service();
-        org.me.stockservice.BuyStocks port = service.getBuyStocksPort();
-        return port.buyStocks(arg0, arg1);
-    }
-
-    private static String sellStocks(int arg0, java.lang.String arg1) {
-        org.me.stockservice.SellStocks_Service service = new org.me.stockservice.SellStocks_Service();
-        org.me.stockservice.SellStocks port = service.getSellStocksPort();
-        return port.sellStocks(arg0, arg1);
-    }
+    private final FileHandler fileHandler;
 
     private static java.util.List<java.lang.String> getCurrencyCodes() {
         sharebrokeringclient.GetCurrencies_Service service = new sharebrokeringclient.GetCurrencies_Service();
@@ -1121,5 +1402,17 @@ public final class sharesbrokeringclient extends javax.swing.JFrame {
         org.me.stockservice.AddStock_Service service = new org.me.stockservice.AddStock_Service();
         org.me.stockservice.AddStock port = service.getAddStockPort();
         return port.addStock(arg0, arg1, arg2, arg3, arg4);
+    }
+
+    private static int buyStocks(int arg0, java.lang.String arg1) {
+        org.me.stockservice.BuyStocks_Service service = new org.me.stockservice.BuyStocks_Service();
+        org.me.stockservice.BuyStocks port = service.getBuyStocksPort();
+        return port.buyStocks(arg0, arg1);
+    }
+
+    private static int sellStocks(int arg0, java.lang.String arg1) {
+        org.me.stockservice.SellStocks_Service service = new org.me.stockservice.SellStocks_Service();
+        org.me.stockservice.SellStocks port = service.getSellStocksPort();
+        return port.sellStocks(arg0, arg1);
     }
 }

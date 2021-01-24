@@ -1,0 +1,4 @@
+Amazon, 20
+Google, 20
+Cisco, 490
+Pepsi, 3
